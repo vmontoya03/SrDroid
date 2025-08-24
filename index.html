@@ -2,30 +2,232 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SrDroid</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="shortcut icon" href="assets/img/blue circle.png" type="image/x-icon" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Srdroid - Optimiza y Repara tu Celular</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link rel="stylesheet" href="assets/img/blue circle.png">
 </head>
 <body>
-  <header>
-    <a href="index.html">
-      <img src="assets/img/blue circle.png" alt="Logo" />
-    </a>
+  <!-- Header -->
+  <header id="mainHeader">
+    <div class="logo">Srdroid</div>
     <nav>
       <ul>
-        <li><a href="index.html">Inicio</a></li>
-        <li><a href="quiensoy.html">Servicio</a>
-          <ul class="submenu">
-            <li><a href="#">Mantenimiento</a></li>
-            <li><a href="#">Optimizacion</a></li>
-            <li><a href="#"></a></li>
-          </ul>
-        </li>
-        <li><a href="productos.html">Productos</a></li>
-        <li><a href="login.html">Log in</a></li>
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#optimizacion">Optimización</a></li>
+        <li><a href="#fallas">Fallas</a></li>
+        <li><a href="#marcas">Marcas</a></li>
+        <li><a href="#repuestos">Repuestos</a></li>
+        <li><a href="#contacto">Contacto</a></li>
       </ul>
     </nav>
+    <div class="header-actions">
+      <button id="cartBtn" class="icon-btn" title="Carrito">🛒</button>
+      <div id="userArea">
+        <button id="loginBtn" class="btn">Iniciar Sesión</button>
+      </div>
+    </div>
   </header>
+
+  <!-- Carrito lateral -->
+  <aside id="cartSidebar" class="cart-sidebar">
+    <div class="cart-header">
+      <h2>Carrito</h2>
+      <button class="icon-btn" onclick="toggleCart()">✖</button>
+    </div>
+    <div id="carrito" class="cart-body"></div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total:</span>
+        <strong id="cartTotal">$0</strong>
+      </div>
+      <button class="btn btn-primary" id="checkoutBtn">Proceder al pago</button>
+    </div>
+  </aside>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <!-- Modales -->
+  <div id="modalOverlay" class="modal-overlay" aria-hidden="true"></div>
+
+  <!-- Auth Modal -->
+  <div id="authModal" class="modal">
+    <div class="modal-header">
+      <h3>Cuenta Srdroid</h3>
+      <button class="icon-btn" onclick="closeModal('authModal')">✖</button>
+    </div>
+    <div class="modal-tabs">
+      <button class="tab active" data-tab="loginTab">Iniciar sesión</button>
+      <button class="tab" data-tab="registerTab">Crear cuenta</button>
+    </div>
+    <div class="modal-body">
+      <form id="loginTab" class="tab-panel active">
+        <label>Email</label>
+        <input type="email" id="loginEmail" required/>
+        <label>Contraseña</label>
+        <input type="password" id="loginPass" required/>
+        <button type="submit" class="btn btn-primary">Entrar</button>
+      </form>
+
+      <form id="registerTab" class="tab-panel">
+        <label>Nombre</label>
+        <input type="text" id="regName" required/>
+        <label>Email</label>
+        <input type="email" id="regEmail" required/>
+        <label>Contraseña</label>
+        <input type="password" id="regPass" required/>
+        <button type="submit" class="btn btn-primary">Crear cuenta</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div id="checkoutModal" class="modal">
+    <div class="modal-header">
+      <h3>Finalizar compra</h3>
+      <button class="icon-btn" onclick="closeModal('checkoutModal')">✖</button>
+    </div>
+    <div class="modal-body">
+      <div id="checkoutSummary" class="checkout-summary"></div>
+      <form id="checkoutForm">
+        <div class="grid-2">
+          <div>
+            <label>Nombre completo</label>
+            <input id="chkName" type="text" required/>
+          </div>
+          <div>
+            <label>Documento</label>
+            <input id="chkDoc" type="text" required/>
+          </div>
+        </div>
+        <label>Dirección</label>
+        <input id="chkAddr" type="text" required/>
+        <div class="grid-2">
+          <div>
+            <label>Ciudad</label>
+            <input id="chkCity" type="text" required/>
+          </div>
+          <div>
+            <label>Teléfono</label>
+            <input id="chkPhone" type="tel" required/>
+          </div>
+        </div>
+        <label>Método de pago</label>
+        <select id="chkPay">
+          <option value="tarjeta">Tarjeta (simulado)</option>
+          <option value="efectivo">Efectivo contraentrega</option>
+          <option value="transferencia">Transferencia</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Pagar ahora</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <main>
+    <section id="inicio" class="seccion reveal">
+      <h1>Bienvenido a Srdroid</h1>
+      <p>La plataforma futurista para optimizar, reparar y mejorar tu celular.</p>
+      <div class="cta-row">
+        <a href="#repuestos" class="btn btn-primary glow">Comprar repuestos</a>
+        <a href="#marcas" class="btn">Diagnóstico por marca</a>
+      </div>
+    </section>
+
+    <section id="optimizacion" class="seccion reveal">
+      <h2>Optimización</h2>
+      <ul class="tips">
+        <li>Activa modo ahorro de batería y desactiva 5G si no lo necesitas.</li>
+        <li>Actualiza el sistema y las apps; limpia caché cada 2-3 semanas.</li>
+        <li>Reinicia el dispositivo y evita widgets innecesarios.</li>
+      </ul>
+    </section>
+
+    <section id="fallas" class="seccion reveal">
+      <h2>Fallas comunes</h2>
+      <div class="cards-3d">
+        <article class="card3d">
+          <h3>Sobrecalentamiento</h3>
+          <p>Retira funda, cierra juegos, baja brillo y verifica apps con alto uso de CPU.</p>
+        </article>
+        <article class="card3d">
+          <h3>Batería se agota</h3>
+          <p>Modo ahorro, restringe apps en segundo plano, calibra batería y revisa salud.</p>
+        </article>
+        <article class="card3d">
+          <h3>Pantalla congelada</h3>
+          <p>Forzar reinicio, liberar memoria y actualizar firmware.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="marcas" class="seccion reveal">
+      <h2>Diagnóstico por marca</h2>
+      <div class="marcas-grid">
+        <div class="marca tilt" onclick="mostrarMarca('Huawei')">Huawei</div>
+        <div class="marca tilt" onclick="mostrarMarca('Samsung')">Samsung</div>
+        <div class="marca tilt" onclick="mostrarMarca('Oppo')">Oppo</div>
+        <div class="marca tilt" onclick="mostrarMarca('Xiaomi')">Xiaomi</div>
+        <div class="marca tilt" onclick="mostrarMarca('LG')">LG</div>
+        <div class="marca tilt" onclick="mostrarMarca('Motorola')">Motorola</div>
+      </div>
+      <div id="marcaInfo" class="marca-info"></div>
+    </section>
+
+    <section id="repuestos" class="seccion reveal">
+      <h2>Repuestos</h2>
+
+      <div class="filters">
+        <input id="searchInput" type="search" placeholder="Buscar repuesto..."/>
+        <select id="brandFilter">
+          <option value="">Todas las marcas</option>
+          <option>Huawei</option>
+          <option>Samsung</option>
+          <option>Oppo</option>
+          <option>Xiaomi</option>
+          <option>LG</option>
+          <option>Motorola</option>
+        </select>
+      </div>
+
+      <div id="productos" class="productos"></div>
+    </section>
+
+    <section id="contacto" class="seccion reveal">
+      <h2>Contacto</h2>
+      <form id="contactForm" class="contact-form">
+        <div class="grid-2">
+          <div>
+            <label>Nombre</label>
+            <input type="text" name="nombre" required/>
+          </div>
+          <div>
+            <label>Email</label>
+            <input type="email" name="email" required/>
+          </div>
+        </div>
+        <label>Mensaje</label>
+        <textarea name="mensaje" required></textarea>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+      </form>
+    </section>
+  </main>
+
+  <!-- Chat IA (simulado) -->
+  <div id="chatIA">
+    <div id="chatHeader" onclick="toggleChat()">Chat Srdroid</div>
+    <div id="chatBody">
+      <div id="chatMensajes"></div>
+      <input type="text" id="chatInput" placeholder="Describe tu problema...">
+      <button onclick="enviarMensaje()">Enviar</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Srdroid — Todos los derechos reservados</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
